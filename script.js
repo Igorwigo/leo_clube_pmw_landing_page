@@ -76,19 +76,44 @@ if (petalGroup) {
   });
 }
 
-// Formulário de contato: abre o e-mail com a mensagem preenchida
+// Máscara de telefone: (00) 0000-0000 ou (00) 00000-0000
+const phoneInput = document.getElementById('phoneInput');
+phoneInput.addEventListener('input', () => {
+  const v = phoneInput.value.replace(/\D/g, '').slice(0, 11);
+  let out = v;
+  if (v.length > 2) out = `(${v.slice(0, 2)}) ${v.slice(2)}`;
+  else if (v.length > 0) out = `(${v}`;
+  if (v.length > 6) {
+    const split = v.length === 11 ? 7 : 6;
+    out = `(${v.slice(0, 2)}) ${v.slice(2, split)}-${v.slice(split)}`;
+  }
+  phoneInput.value = out;
+});
+
+// Formulário de contato: envia para o Formspree sem sair da página
 const form = document.getElementById('contactForm');
 const note = document.getElementById('formNote');
-form.addEventListener('submit', e => {
+form.addEventListener('submit', async e => {
   e.preventDefault();
-  const d = Object.fromEntries(new FormData(form));
-  const subject = `[Site] ${d.interesse} – ${d.nome}`;
-  const body =
-    `Nome: ${d.nome}\nIdade: ${d.idade || '-'}\nContato: ${d.contato}\nInteresse: ${d.interesse}\n\n${d.mensagem || ''}`;
-  window.location.href =
-    `mailto:contato@leoclubedepalmas.com.br?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  note.textContent = 'Obrigado! Abrimos o seu e-mail para enviar a mensagem. 🌻';
-  form.reset();
+  const btn = form.querySelector('button[type="submit"]');
+  const data = new FormData(form);
+  data.append('_subject', `[Site] ${data.get('interesse')} – ${data.get('nome')}`);
+  btn.disabled = true;
+  note.textContent = 'Enviando...';
+  try {
+    const res = await fetch(form.action, {
+      method: 'POST',
+      body: data,
+      headers: { Accept: 'application/json' },
+    });
+    if (!res.ok) throw new Error();
+    note.textContent = 'Obrigado! Recebemos sua mensagem e logo entraremos em contato. 🌻';
+    form.reset();
+  } catch {
+    note.textContent = 'Não foi possível enviar agora. Tente novamente ou fale com a gente pelo WhatsApp.';
+  } finally {
+    btn.disabled = false;
+  }
 });
 
 document.getElementById('year').textContent = new Date().getFullYear();

@@ -311,6 +311,15 @@ p { margin: 0 0 1rem; }
   pointer-events: none;
 }
 .sunflower { width: min(260px, 80%); margin: 0 auto 1.5rem; animation: spin 40s linear infinite; }
+.about__photo {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 18px;
+  margin: 0 0 1.5rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+}
 .about__quote {
   font-family: var(--font-script);
   font-size: 1.8rem;

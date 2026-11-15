@@ -72,11 +72,7 @@
     <div class="container about">
       <div class="about__media reveal">
         <div class="about__card">
-          <svg class="sunflower" viewBox="0 0 200 200" aria-hidden="true">
-            <g class="sunflower__petals"></g>
-            <circle cx="100" cy="100" r="34" fill="#5a3a12"/>
-            <circle cx="100" cy="100" r="26" fill="#3d260b"/>
-          </svg>
+          <img class="about__photo" src="assets/membros/todos_leo_clube.jpg" alt="Membros do LEO Clube de Palmas reunidos" loading="lazy">
           <p class="about__quote">“Servir é a forma mais bonita de liderar.”</p>
         </div>
       </div>
@@ -369,12 +365,13 @@
           </li>
         </ul>
       </div>
-      <form class="form reveal" id="contactForm">
+      <form class="form reveal" id="contactForm" action="https://formspree.io/f/xljbjnlb" method="POST">
         <div class="form__row">
           <label>Nome<input type="text" name="nome" required placeholder="Seu nome"></label>
           <label>Idade<input type="number" name="idade" min="10" max="99" placeholder="Ex.: 19"></label>
         </div>
-        <label>WhatsApp ou e-mail<input type="text" name="contato" required placeholder="Como falamos com você?"></label>
+        <label>Telefone / WhatsApp<input type="tel" name="whatsapp" id="phoneInput" required inputmode="numeric" autocomplete="tel-national" maxlength="15" pattern="\(\d{2}\) \d{4,5}-\d{4}" title="Informe um telefone no formato (63) 99999-9999" placeholder="(63) 99999-9999"></label>
+        <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
         <label>Interesse
           <select name="interesse">
             <option>Quero ser LEO</option>
